@@ -12,7 +12,7 @@ import (
 )
 
 // constantes para conexion mongo
-const dburi = "mongodb://localhost:27017"
+const dburi = "mongodb://root:mongo@localhost:27017/admin"
 const basededatos = "hotel-reservation"
 const coleccionUsuarios = "usuarios"
 
