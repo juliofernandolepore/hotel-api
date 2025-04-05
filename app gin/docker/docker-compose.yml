@@ -1,0 +1,18 @@
+name: crudmongo
+
+services:
+  mongo-dev:
+    image: mongo:latest
+    container_name: contenedor
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+      MONGO_INITDB_DATABASE: hotel-api
+    volumes:
+      - mongo-dev-data:/data/db    
+
+volumes:
+  mongo-dev-data:
+
