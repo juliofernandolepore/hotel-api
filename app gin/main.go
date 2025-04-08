@@ -1,20 +1,17 @@
 package main
 
 import (
-	"context"
 	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/juliofernandolepore/hotel-api/api"
-	"github.com/juliofernandolepore/hotel-api/types"
+	"github.com/juliofernandolepore/hotel-api/db"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 // constantes para conexion mongo
 const dburi = "mongodb://root:mongo@localhost:27017/admin"
-const basededatos = "hotel-reservation"
-const coleccionUsuarios = "usuarios"
 
 func main() {
 	// configuracion de conexxion mongo
@@ -22,22 +19,14 @@ func main() {
 	if err != nil {
 		log.Fatalln("no se pudo efectuar conexion a db mongo", err)
 	}
-	ctx := context.Background()
-	coll := client.Database(basededatos).Collection(coleccionUsuarios)
-	usuario := types.Usuario{
-		Nombre:   "fer",
-		Apellido: "mi apellido",
-	}
-	res, err := coll.InsertOne(ctx, usuario)
-	if err != nil {
-		log.Fatalln("no pudo ingresar el usuario a la coleccion", res)
-	}
-	log.Println(res)
+	log.Println("conexion exitosa")
+
+	//instanciar un nuevo objeto handleUsers (del paquete api creado) para utilizar sis metodos
+	UserHandler := api.NuevoUserHandler(db.NuevoMongoAlmacenador(client))
+
 	app := gin.Default()
 
-	//apiv1 := app.Group("/api/v1")
-
-	app.GET("/fer", api.HandleGetUsers)
+	app.GET("/user", api.UserHandler.HandleGetUser)
 	app.Run()
 
 }
